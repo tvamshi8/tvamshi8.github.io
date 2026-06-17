@@ -6,17 +6,12 @@
     {
       "category": "Programming Languages",
       "icon": "fas fa-code",
-      "skills": [
-        "Python"
-      ]
+      "skills": ["Python"]
     },
     {
       "category": "Frameworks & Libraries",
       "icon": "fas fa-toolbox",
-      "skills": [
-        "Pandas",
-        "NumPy"
-      ]
+      "skills": ["Pandas", "NumPy"]
     },
     {
       "category": "Tools & Platforms",
@@ -39,27 +34,40 @@
       ]
     },
     {
-      "category": "Technical Skills",
-      "icon": "fas fa-laptop-code",
+      "category": "Business Analysis & Requirements",
+      "icon": "fas fa-magnifying-glass-chart",
       "skills": [
         "Requirements Gathering",
         "Business Requirements",
         "Functional Requirements",
         "Requirements Documentation",
-        "Business Process Analysis",
-        "Gap Analysis",
-        "Workflow Analysis",
-        "Process Mapping",
         "BRD",
         "FRD",
         "User Stories",
         "Acceptance Criteria",
         "Use Cases",
         "Business Rules",
+        "UAT"
+      ]
+    },
+    {
+      "category": "Process Analysis & Improvement",
+      "icon": "fas fa-diagram-project",
+      "skills": [
+        "Business Process Analysis",
+        "Gap Analysis",
+        "Workflow Analysis",
+        "Process Mapping",
         "Root Cause Analysis",
-        "UAT",
-        "Stakeholder Management",
-        "Change Management",
+        "Process Improvement",
+        "Continuous Improvement",
+        "Business Process Reengineering"
+      ]
+    },
+    {
+      "category": "Data Analytics & Business Intelligence",
+      "icon": "fas fa-chart-line",
+      "skills": [
         "Data Analysis",
         "Business Intelligence",
         "KPI Development",
@@ -72,6 +80,14 @@
         "Data Quality Assessment",
         "Executive Reporting",
         "Ad Hoc Analysis",
+        "Statistical Analysis",
+        "Predictive Analytics"
+      ]
+    },
+    {
+      "category": "Dashboards & Data Visualization",
+      "icon": "fas fa-chart-pie",
+      "skills": [
         "Dashboard Development",
         "KPI Dashboards",
         "Executive Scorecards",
@@ -80,22 +96,31 @@
         "DAX",
         "Performance Reporting",
         "Data Storytelling",
+        "Reporting Automation"
+      ]
+    },
+    {
+      "category": "Data Engineering & Modeling",
+      "icon": "fas fa-database",
+      "skills": [
         "Data Extraction",
         "Data Transformation",
         "Data Cleansing",
         "Relational Databases",
         "Query Optimization",
-        "Data Modeling",
-        "Statistical Analysis",
-        "Predictive Analytics",
-        "Reporting Automation",
+        "Data Modeling"
+      ]
+    },
+    {
+      "category": "Delivery & Stakeholder Management",
+      "icon": "fas fa-people-arrows",
+      "skills": [
         "Agile",
         "Scrum",
         "SDLC",
         "Waterfall",
-        "Process Improvement",
-        "Continuous Improvement",
-        "Business Process Reengineering"
+        "Stakeholder Management",
+        "Change Management"
       ]
     }
   ]

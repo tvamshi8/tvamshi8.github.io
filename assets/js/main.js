@@ -1,601 +1,556 @@
 // ==========================================================================
-// Load Site Configuration (Meta Tags)
+// Vamshi Tummala — Portfolio bootstrap
+// Content is loaded from /data/*.json; static <head> + <noscript> keep the
+// page meaningful for crawlers and no-JS visitors.
+// ==========================================================================
+
+const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Small helpers -------------------------------------------------------------
+async function getJSON(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`${path} → ${res.status}`);
+  return res.json();
+}
+
+/** Open external links safely (no reverse-tabnabbing). */
+function externalAttrs(anchor) {
+  anchor.target = "_blank";
+  anchor.rel = "noopener noreferrer";
+}
+
+function escapeHtml(str = "") {
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ==========================================================================
+// Meta / site config
 // ==========================================================================
 async function loadSiteConfig() {
-    try {
-        const response = await fetch('data/site-config.json');
-        const config = await response.json();
-
-        // Update meta tags
-        document.title = config.meta.title;
-        document.querySelector('meta[name="description"]').setAttribute('content', config.meta.description);
-        document.querySelector('meta[name="author"]').setAttribute('content', config.meta.author);
-        document.querySelector('meta[name="keywords"]').setAttribute('content', config.meta.keywords);
-    } catch (error) {
-        console.error('Error loading site config:', error);
-    }
+  const config = await getJSON("data/site-config.json");
+  // Static head already carries good defaults; only override if data provides them.
+  if (config?.meta?.title) document.title = config.meta.title;
 }
 
 // ==========================================================================
-// Load Navigation
+// Navigation
 // ==========================================================================
 async function loadNavigation() {
-    try {
-        const response = await fetch('data/navigation.json');
-        const navData = await response.json();
+  const navData = await getJSON("data/navigation.json");
 
-        // Update brand name
-        const navBrand = document.querySelector('.nav-brand a');
-        if (navBrand) {
-            navBrand.textContent = navData.brand.name;
-            navBrand.setAttribute('href', navData.brand.href);
-        }
+  const navBrand = document.querySelector(".nav-brand a");
+  if (navBrand && navData.brand) {
+    navBrand.textContent = navData.brand.name;
+    navBrand.setAttribute("href", navData.brand.href);
+  }
 
-        // Build navigation menu
-        const navMenu = document.getElementById('navMenu');
-        if (navMenu) {
-            navMenu.innerHTML = '';
-            navData.menuItems.forEach(item => {
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="${item.href}" class="nav-link">${item.label}</a>`;
-                navMenu.appendChild(li);
-            });
-
-            // Re-attach event listeners for smooth scroll and mobile menu close
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    navMenu.classList.remove('active');
-                });
-            });
-        }
-    } catch (error) {
-        console.error('Error loading navigation:', error);
-    }
+  const navMenu = document.getElementById("navMenu");
+  if (navMenu) {
+    navMenu.innerHTML = "";
+    navData.menuItems.forEach((item) => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = item.href;
+      a.className = "nav-link";
+      a.textContent = item.label;
+      li.appendChild(a);
+      navMenu.appendChild(li);
+    });
+  }
 }
 
 // ==========================================================================
-// Load Hero Section
+// Hero
 // ==========================================================================
 async function loadHero() {
-    try {
-        const response = await fetch('data/hero.json');
-        const hero = await response.json();
+  const hero = await getJSON("data/hero.json");
 
-        // Update hero content
-        const heroGreeting = document.getElementById('heroGreeting');
-        const heroName = document.getElementById('heroName');
-        const heroTitle = document.getElementById('heroTitle');
-        const heroSummary = document.getElementById('heroSummary');
+  const set = (id, value, asHtml = false) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (asHtml) el.innerHTML = value;
+    else el.textContent = value;
+  };
 
-        if (heroGreeting) heroGreeting.textContent = hero.greeting;
-        if (heroName) heroName.textContent = hero.name;
-        if (heroTitle) heroTitle.textContent = hero.title;
-        if (heroSummary) heroSummary.innerHTML = hero.summary;
+  set("heroGreeting", hero.greeting);
+  set("heroName", hero.name);
+  set("heroTitle", hero.title);
+  set("heroSummary", hero.summary, true);
 
-        // Build highlights
-        const highlightsContainer = document.getElementById('heroHighlights');
-        if (highlightsContainer) {
-            highlightsContainer.innerHTML = '';
-            hero.highlights.forEach(highlight => {
-                const div = document.createElement('div');
-                div.className = 'highlight-item';
-                div.innerHTML = `
-                    <i class="${highlight.icon}"></i>
-                    <span>${highlight.text}</span>
-                `;
-                highlightsContainer.appendChild(div);
-            });
-        }
+  const highlights = document.getElementById("heroHighlights");
+  if (highlights) {
+    highlights.innerHTML = "";
+    (hero.highlights || []).forEach((h) => {
+      const div = document.createElement("div");
+      div.className = "highlight-item";
+      div.innerHTML = `<i class="${escapeHtml(h.icon)}" aria-hidden="true"></i><span>${escapeHtml(
+        h.text
+      )}</span>`;
+      highlights.appendChild(div);
+    });
+  }
 
-        // Build CTA buttons
-        const ctaContainer = document.getElementById('heroCTA');
-        if (ctaContainer) {
-            ctaContainer.innerHTML = '';
-            hero.cta.buttons.forEach(button => {
-                const a = document.createElement('a');
-                a.href = button.href;
-                a.className = `btn btn-${button.type}`;
-                if (button.external) a.target = '_blank';
-                a.innerHTML = button.icon ? `<i class="${button.icon}"></i> ${button.text}` : button.text;
-                ctaContainer.appendChild(a);
-            });
-        }
+  const cta = document.getElementById("heroCTA");
+  if (cta) {
+    cta.innerHTML = "";
+    (hero.cta?.buttons || []).forEach((b) => {
+      const a = document.createElement("a");
+      a.href = b.href;
+      a.className = `btn btn-${b.type}`;
+      if (b.external) externalAttrs(a);
+      a.innerHTML = b.icon ? `<i class="${escapeHtml(b.icon)}" aria-hidden="true"></i> ${escapeHtml(b.text)}` : escapeHtml(b.text);
+      cta.appendChild(a);
+    });
+  }
 
-        // Build social links
-        const socialContainer = document.getElementById('heroSocial');
-        if (socialContainer) {
-            socialContainer.innerHTML = '';
-            hero.socialLinks.forEach(social => {
-                const a = document.createElement('a');
-                a.href = social.url;
-                a.target = '_blank';
-                a.setAttribute('aria-label', social.platform);
-                a.innerHTML = `<i class="${social.icon}"></i>`;
-                socialContainer.appendChild(a);
-            });
-        }
-    } catch (error) {
-        console.error('Error loading hero data:', error);
-    }
+  const social = document.getElementById("heroSocial");
+  if (social) {
+    social.innerHTML = "";
+    (hero.socialLinks || []).forEach((s) => {
+      const a = document.createElement("a");
+      a.href = s.url;
+      a.setAttribute("aria-label", s.platform);
+      if (!s.url.startsWith("mailto:") && !s.url.startsWith("tel:")) externalAttrs(a);
+      a.innerHTML = `<i class="${escapeHtml(s.icon)}" aria-hidden="true"></i>`;
+      social.appendChild(a);
+    });
+  }
 }
 
 // ==========================================================================
-// Load About Section
+// About
 // ==========================================================================
 async function loadAbout() {
-    try {
-        const response = await fetch('data/about.json');
-        const about = await response.json();
+  const about = await getJSON("data/about.json");
 
-        // Update section title
-        const sectionTitle = document.querySelector('#about .section-title');
-        if (sectionTitle) sectionTitle.textContent = about.sectionTitle;
+  const title = document.querySelector("#about .section-title");
+  if (title) title.textContent = about.sectionTitle;
 
-        // Build paragraphs
-        const textContainer = document.getElementById('aboutText');
-        if (textContainer) {
-            textContainer.innerHTML = '';
-            about.paragraphs.forEach(paragraph => {
-                const p = document.createElement('p');
-                p.textContent = paragraph;
-                textContainer.appendChild(p);
-            });
-        }
-
-        // Build statistics
-        const statsContainer = document.getElementById('aboutStats');
-        if (statsContainer) {
-            statsContainer.innerHTML = '';
-            about.statistics.forEach(stat => {
-                const div = document.createElement('div');
-                div.className = 'stat-item';
-                div.innerHTML = `
-                    <h3>${stat.value}</h3>
-                    <p>${stat.label}</p>
-                `;
-                statsContainer.appendChild(div);
-            });
-        }
-    } catch (error) {
-        console.error('Error loading about data:', error);
-    }
-}
-
-// ==========================================================================
-// Load Contact Section
-// ==========================================================================
-async function loadContact() {
-    try {
-        const response = await fetch('data/contact.json');
-        const contact = await response.json();
-
-        // Update section title
-        const sectionTitle = document.querySelector('#contact .section-title');
-        if (sectionTitle) sectionTitle.textContent = contact.sectionTitle;
-
-        // Build contact info
-        const contactInfoContainer = document.getElementById('contactInfo');
-        if (contactInfoContainer) {
-            contactInfoContainer.innerHTML = '';
-            contact.contactInfo.forEach(info => {
-                const div = document.createElement('div');
-                div.className = 'contact-item';
-
-                const valueContent = info.href
-                    ? `<a href="${info.href}">${info.value}</a>`
-                    : `<p>${info.value}</p>`;
-
-                div.innerHTML = `
-                    <i class="${info.icon}"></i>
-                    <div>
-                        <h3>${info.label}</h3>
-                        ${valueContent}
-                    </div>
-                `;
-                contactInfoContainer.appendChild(div);
-            });
-        }
-
-        // Build contact form
-        const formContainer = document.getElementById('contactFormContainer');
-        if (formContainer) {
-            let formHTML = '<form class="contact-form" id="contactForm">';
-
-            contact.form.fields.forEach(field => {
-                formHTML += '<div class="form-group">';
-                if (field.type === 'textarea') {
-                    formHTML += `<textarea id="${field.id}" name="${field.id}" rows="${field.rows}" placeholder="${field.placeholder}" ${field.required ? 'required' : ''}></textarea>`;
-                } else {
-                    formHTML += `<input type="${field.type}" id="${field.id}" name="${field.id}" placeholder="${field.placeholder}" ${field.required ? 'required' : ''}>`;
-                }
-                formHTML += '</div>';
-            });
-
-            formHTML += `<button type="submit" class="btn btn-${contact.form.submitButton.type}">${contact.form.submitButton.text}</button>`;
-            formHTML += '</form>';
-
-            formContainer.innerHTML = formHTML;
-
-            // Re-attach form submit handler
-            const contactForm = document.getElementById('contactForm');
-            if (contactForm) {
-                contactForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    alert(contact.form.successMessage);
-                    contactForm.reset();
-                });
-            }
-        }
-    } catch (error) {
-        console.error('Error loading contact data:', error);
-    }
-}
-
-// ==========================================================================
-// Load Footer
-// ==========================================================================
-async function loadFooter() {
-    try {
-        const response = await fetch('data/footer.json');
-        const footer = await response.json();
-
-        // Build copyright text
-        const copyrightContainer = document.getElementById('footerCopyright');
-        if (copyrightContainer) {
-            copyrightContainer.textContent = `© ${footer.copyright.year} ${footer.copyright.name}. ${footer.copyright.text}`;
-        }
-
-        // Build footer links
-        const linksContainer = document.getElementById('footerLinks');
-        if (linksContainer) {
-            linksContainer.innerHTML = '';
-            footer.links.forEach(link => {
-                const a = document.createElement('a');
-                a.href = link.url;
-                a.target = '_blank';
-                a.textContent = link.text;
-                linksContainer.appendChild(a);
-            });
-        }
-    } catch (error) {
-        console.error('Error loading footer data:', error);
-    }
-}
-
-// ==========================================================================
-// Navigation Toggle for Mobile
-// ==========================================================================
-const navToggle = document.getElementById('navToggle');
-const navMenu = document.getElementById('navMenu');
-const navLinks = document.querySelectorAll('.nav-link');
-
-if (navToggle) {
-    navToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
+  const text = document.getElementById("aboutText");
+  if (text) {
+    text.innerHTML = "";
+    (about.paragraphs || []).forEach((p) => {
+      const el = document.createElement("p");
+      el.textContent = p;
+      text.appendChild(el);
     });
+  }
+
+  const stats = document.getElementById("aboutStats");
+  if (stats) {
+    stats.innerHTML = "";
+    (about.statistics || []).forEach((s) => {
+      const div = document.createElement("div");
+      div.className = "stat-item";
+      div.innerHTML = `<h3>${escapeHtml(s.value)}</h3><p>${escapeHtml(s.label)}</p>`;
+      stats.appendChild(div);
+    });
+  }
 }
 
-// Close mobile menu when a link is clicked
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-    });
-});
-
 // ==========================================================================
-// Navbar Scroll Effect
-// ==========================================================================
-const navbar = document.getElementById('navbar');
-let lastScroll = 0;
-
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll > 100) {
-        navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
-    } else {
-        navbar.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
-    }
-
-    lastScroll = currentScroll;
-});
-
-// ==========================================================================
-// Smooth Scroll for Navigation Links
-// ==========================================================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offset = 80; // Account for fixed navbar
-            const targetPosition = target.offsetTop - offset;
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// ==========================================================================
-// Load Experience Data
+// Experience
 // ==========================================================================
 async function loadExperience() {
-    try {
-        const response = await fetch('data/experience.json');
-        const data = await response.json();
+  const data = await getJSON("data/experience.json");
 
-        // Update section title
-        const sectionTitle = document.querySelector('#experience .section-title');
-        if (sectionTitle) sectionTitle.textContent = data.sectionTitle;
+  const title = document.querySelector("#experience .section-title");
+  if (title) title.textContent = data.sectionTitle;
 
-        const timeline = document.getElementById('experienceTimeline');
-        const experiences = data.experiences || data; // Support both new and old format
+  const timeline = document.getElementById("experienceTimeline");
+  if (!timeline) return;
+  timeline.innerHTML = "";
 
-        (Array.isArray(experiences) ? experiences : [experiences]).forEach(exp => {
-            // Skip instruction entries
-            if (exp._instructions) return;
+  const experiences = Array.isArray(data.experiences) ? data.experiences : [];
+  experiences
+    .filter((exp) => !exp._instructions)
+    .forEach((exp) => {
+      const item = document.createElement("div");
+      item.className = "timeline-item";
 
-            const timelineItem = document.createElement('div');
-            timelineItem.className = 'timeline-item';
+      // Prefer the bulleted responsibilities; only fall back to the prose
+      // description when no bullets exist (the source data duplicates them).
+      let body = "";
+      if (Array.isArray(exp.responsibilities) && exp.responsibilities.length) {
+        body = `<ul>${exp.responsibilities.map((r) => `<li>${escapeHtml(r)}</li>`).join("")}</ul>`;
+      } else if (exp.description) {
+        body = exp.description
+          .split("\n")
+          .filter(Boolean)
+          .map((p) => `<p>${escapeHtml(p)}</p>`)
+          .join("");
+      }
 
-            const responsibilities = exp.responsibilities
-                ? `<ul>${exp.responsibilities.map(r => `<li>${r}</li>`).join('')}</ul>`
-                : '';
-
-            timelineItem.innerHTML = `
-                <div class="timeline-content">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">${exp.title}</h3>
-                            <p class="timeline-company">${exp.company}</p>
-                        </div>
-                        <span class="timeline-period">${exp.period}</span>
-                    </div>
-                    <div class="timeline-description">
-                        <p>${exp.description}</p>
-                        ${responsibilities}
-                    </div>
-                </div>
-            `;
-            timeline.appendChild(timelineItem);
-        });
-    } catch (error) {
-        console.error('Error loading experience data:', error);
-    }
+      item.innerHTML = `
+        <div class="timeline-header">
+          <div>
+            <h3 class="timeline-title">${escapeHtml(exp.title)}</h3>
+            <p class="timeline-company">${escapeHtml(exp.company)}</p>
+          </div>
+          <span class="timeline-period">${escapeHtml(exp.period)}</span>
+        </div>
+        <div class="timeline-description">${body}</div>`;
+      timeline.appendChild(item);
+    });
 }
 
 // ==========================================================================
-// Load Skills Data
+// Skills
 // ==========================================================================
 async function loadSkills() {
-    try {
-        const response = await fetch('data/skills.json');
-        const data = await response.json();
+  const data = await getJSON("data/skills.json");
 
-        // Update section title
-        const sectionTitle = document.querySelector('#skills .section-title');
-        if (sectionTitle) sectionTitle.textContent = data.sectionTitle;
+  const title = document.querySelector("#skills .section-title");
+  if (title) title.textContent = data.sectionTitle;
 
-        const skillsGrid = document.getElementById('skillsGrid');
-        const categories = data.categories || data; // Support both new and old format
+  const grid = document.getElementById("skillsGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
 
-        (Array.isArray(categories) ? categories : [categories]).forEach(category => {
-            // Skip instruction entries
-            if (category._instructions) return;
-
-            const skillCategory = document.createElement('div');
-            skillCategory.className = 'skill-category';
-
-            const skillTags = category.skills
-                .map(skill => `<span class="skill-tag">${skill}</span>`)
-                .join('');
-
-            skillCategory.innerHTML = `
-                <h3><i class="${category.icon}"></i> ${category.category}</h3>
-                <div class="skill-list">
-                    ${skillTags}
-                </div>
-            `;
-            skillsGrid.appendChild(skillCategory);
-        });
-    } catch (error) {
-        console.error('Error loading skills data:', error);
-    }
+  (data.categories || [])
+    .filter((c) => !c._instructions && Array.isArray(c.skills))
+    .forEach((category) => {
+      const el = document.createElement("div");
+      el.className = "skill-category";
+      const tags = category.skills.map((s) => `<span class="skill-tag">${escapeHtml(s)}</span>`).join("");
+      el.innerHTML = `
+        <h3><i class="${escapeHtml(category.icon)}" aria-hidden="true"></i> ${escapeHtml(
+        category.category
+      )}</h3>
+        <div class="skill-list">${tags}</div>`;
+      grid.appendChild(el);
+    });
 }
 
 // ==========================================================================
-// Load Projects Data
+// Projects
 // ==========================================================================
 async function loadProjects() {
-    try {
-        const response = await fetch('data/projects.json');
-        const data = await response.json();
+  const data = await getJSON("data/projects.json");
 
-        // Update section title
-        const sectionTitle = document.querySelector('#projects .section-title');
-        if (sectionTitle) sectionTitle.textContent = data.sectionTitle;
+  const title = document.querySelector("#projects .section-title");
+  if (title) title.textContent = data.sectionTitle;
 
-        const projectsGrid = document.getElementById('projectsGrid');
-        const projects = data.projects || data; // Support both new and old format
+  const grid = document.getElementById("projectsGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
 
-        (Array.isArray(projects) ? projects : [projects]).forEach(project => {
-            // Skip instruction entries
-            if (project._instructions) return;
+  (data.projects || [])
+    .filter((p) => !p._instructions)
+    .forEach((project) => {
+      const card = document.createElement("div");
+      card.className = "project-card";
 
-            const projectCard = document.createElement('div');
-            projectCard.className = 'project-card';
+      const tech = (project.technologies || [])
+        .map((t) => `<span class="tech-badge">${escapeHtml(t)}</span>`)
+        .join("");
 
-            const techBadges = project.technologies
-                .map(tech => `<span class="tech-badge">${tech}</span>`)
-                .join('');
+      const links = [];
+      if (project.github) {
+        links.push(
+          `<a href="${escapeHtml(project.github)}" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fab fa-github" aria-hidden="true"></i> Code</a>`
+        );
+      }
+      // Only show a separate "Live Demo" when it differs from the repo link.
+      if (project.demo && project.demo !== project.github) {
+        links.push(
+          `<a href="${escapeHtml(project.demo)}" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-external-link-alt" aria-hidden="true"></i> Demo</a>`
+        );
+      }
 
-            const links = [];
-            if (project.github) {
-                links.push(`<a href="${project.github}" target="_blank" class="project-link">
-                    <i class="fab fa-github"></i> View Code
-                </a>`);
-            }
-            if (project.demo) {
-                links.push(`<a href="${project.demo}" target="_blank" class="project-link">
-                    <i class="fas fa-external-link-alt"></i> Live Demo
-                </a>`);
-            }
+      const media = project.image
+        ? `<img src="${escapeHtml(project.image)}" alt="${escapeHtml(
+            project.title
+          )} — project thumbnail" loading="lazy" decoding="async" onerror="this.remove()" />`
+        : `<i class="${escapeHtml(project.icon || "fas fa-code")}" aria-hidden="true"></i>`;
 
-            projectCard.innerHTML = `
-                <div class="project-image">
-                    <i class="${project.icon || 'fas fa-code'}"></i>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">${project.title}</h3>
-                    <p class="project-description">${project.description}</p>
-                    <div class="project-tech">
-                        ${techBadges}
-                    </div>
-                    <div class="project-links">
-                        ${links.join('')}
-                    </div>
-                </div>
-            `;
-            projectsGrid.appendChild(projectCard);
-        });
-    } catch (error) {
-        console.error('Error loading projects data:', error);
-    }
+      card.innerHTML = `
+        <div class="project-image">${media}</div>
+        <div class="project-content">
+          <h3 class="project-title">${escapeHtml(project.title)}</h3>
+          <p class="project-description">${escapeHtml(project.description)}</p>
+          ${tech ? `<div class="project-tech">${tech}</div>` : ""}
+          ${links.length ? `<div class="project-links">${links.join("")}</div>` : ""}
+        </div>`;
+      grid.appendChild(card);
+    });
 }
 
 // ==========================================================================
-// Load Education Data
+// Education
 // ==========================================================================
 async function loadEducation() {
-    try {
-        const response = await fetch('data/education.json');
-        const data = await response.json();
+  const data = await getJSON("data/education.json");
 
-        // Update section title
-        const sectionTitle = document.querySelector('#education .section-title');
-        if (sectionTitle) sectionTitle.textContent = data.sectionTitle;
+  const title = document.querySelector("#education .section-title");
+  if (title) title.textContent = data.sectionTitle;
 
-        // Update certifications title
-        const certTitle = document.querySelector('#education .certifications h3');
-        if (certTitle) certTitle.textContent = data.certificationsTitle || 'Certifications';
+  const grid = document.getElementById("educationGrid");
+  if (grid) {
+    grid.innerHTML = "";
+    (data.education || [])
+      .filter((e) => !e._instructions)
+      .forEach((edu) => {
+        const el = document.createElement("div");
+        el.className = "education-item";
+        el.innerHTML = `
+          <div class="education-header">
+            <div>
+              <h3 class="education-degree">${escapeHtml(edu.degree)}</h3>
+              <p class="education-school">${escapeHtml(edu.school)}</p>
+            </div>
+            <span class="education-period">${escapeHtml(edu.period)}</span>
+          </div>
+          ${edu.details ? `<p class="education-detail">${escapeHtml(edu.details)}</p>` : ""}`;
+        grid.appendChild(el);
+      });
+  }
 
-        const educationGrid = document.getElementById('educationGrid');
-        const certGrid = document.getElementById('certGrid');
+  // Hide the certifications block entirely when there are none, rather than
+  // leaving a dangling heading.
+  const certs = (data.certifications || []).filter((c) => !c._instructions);
+  const certBlock = document.querySelector("#education .certifications");
+  if (!certs.length) {
+    if (certBlock) certBlock.style.display = "none";
+    return;
+  }
+  const certTitle = document.querySelector("#education .certifications h3");
+  if (certTitle) certTitle.textContent = data.certificationsTitle || "Certifications";
 
-        // Load education items
-        data.education.forEach(edu => {
-            // Skip instruction entries
-            if (edu._instructions) return;
+  const certGrid = document.getElementById("certGrid");
+  if (certGrid) {
+    certGrid.innerHTML = "";
+    certs.forEach((cert) => {
+      const el = document.createElement("div");
+      el.className = "cert-item";
+      el.innerHTML = `<strong>${escapeHtml(cert.name)}</strong>${
+        cert.issuer ? `<p class="cert-issuer">${escapeHtml(cert.issuer)}</p>` : ""
+      }`;
+      certGrid.appendChild(el);
+    });
+  }
+}
 
-            const eduItem = document.createElement('div');
-            eduItem.className = 'education-item';
+// ==========================================================================
+// Contact (real, working mailto submission — no silent drop)
+// ==========================================================================
+async function loadContact() {
+  const contact = await getJSON("data/contact.json");
 
-            eduItem.innerHTML = `
-                <div class="education-header">
-                    <div>
-                        <h3 class="education-degree">${edu.degree}</h3>
-                        <p class="education-school">${edu.school}</p>
-                    </div>
-                    <span class="education-period">${edu.period}</span>
-                </div>
-                ${edu.details ? `<p class="timeline-description">${edu.details}</p>` : ''}
-            `;
-            educationGrid.appendChild(eduItem);
+  const title = document.querySelector("#contact .section-title");
+  if (title) title.textContent = contact.sectionTitle;
+
+  const recipient =
+    (contact.contactInfo || []).find((i) => i.type === "email")?.value ||
+    "tummalavamshi266@gmail.com";
+
+  const info = document.getElementById("contactInfo");
+  if (info) {
+    info.innerHTML = "";
+    (contact.contactInfo || []).forEach((it) => {
+      const div = document.createElement("div");
+      div.className = "contact-item";
+      const value = it.href
+        ? `<a href="${escapeHtml(it.href)}"${
+            it.href.startsWith("http") ? ' target="_blank" rel="noopener noreferrer"' : ""
+          }>${escapeHtml(it.value)}</a>`
+        : `<p>${escapeHtml(it.value)}</p>`;
+      div.innerHTML = `<i class="${escapeHtml(it.icon)}" aria-hidden="true"></i><div><h3>${escapeHtml(
+        it.label
+      )}</h3>${value}</div>`;
+      info.appendChild(div);
+    });
+  }
+
+  const formContainer = document.getElementById("contactFormContainer");
+  if (formContainer && contact.form) {
+    const form = document.createElement("form");
+    form.className = "contact-form";
+    form.id = "contactForm";
+    form.setAttribute("novalidate", "");
+
+    contact.form.fields.forEach((field) => {
+      const group = document.createElement("div");
+      group.className = "form-group";
+      const labelText = field.placeholder || field.id;
+      const control =
+        field.type === "textarea"
+          ? `<textarea id="${field.id}" name="${field.id}" rows="${field.rows || 5}" placeholder="${escapeHtml(
+              field.placeholder || ""
+            )}" ${field.required ? "required" : ""}></textarea>`
+          : `<input type="${field.type}" id="${field.id}" name="${field.id}" placeholder="${escapeHtml(
+              field.placeholder || ""
+            )}" ${field.required ? "required" : ""}>`;
+      group.innerHTML = `<label for="${field.id}">${escapeHtml(labelText)}</label>${control}`;
+      form.appendChild(group);
+    });
+
+    const submit = document.createElement("button");
+    submit.type = "submit";
+    submit.className = `btn btn-${contact.form.submitButton.type}`;
+    submit.textContent = contact.form.submitButton.text;
+    form.appendChild(submit);
+
+    const note = document.createElement("p");
+    note.className = "form-note";
+    note.textContent = "Opens your email client. Prefer direct? " + recipient;
+    form.appendChild(note);
+
+    formContainer.innerHTML = "";
+    formContainer.appendChild(form);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const name = encodeURIComponent(form.name?.value || "");
+      const email = encodeURIComponent(form.email?.value || "");
+      const message = form.message?.value || "";
+      const subject = encodeURIComponent(`Portfolio enquiry from ${form.name?.value || "visitor"}`);
+      const body = encodeURIComponent(`${message}\n\n— ${form.name?.value || ""} (${form.email?.value || ""})`);
+      // Hand off to the user's mail client with the message pre-filled.
+      window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    });
+  }
+}
+
+// ==========================================================================
+// Footer
+// ==========================================================================
+async function loadFooter() {
+  const footer = await getJSON("data/footer.json");
+
+  const copy = document.getElementById("footerCopyright");
+  if (copy && footer.copyright) {
+    copy.textContent = `© ${footer.copyright.year} ${footer.copyright.name}. ${footer.copyright.text}`;
+  }
+
+  const links = document.getElementById("footerLinks");
+  if (links) {
+    links.innerHTML = "";
+    (footer.links || []).forEach((l) => {
+      const a = document.createElement("a");
+      a.href = l.url;
+      a.textContent = l.text;
+      if (l.url.startsWith("http")) externalAttrs(a);
+      links.appendChild(a);
+    });
+  }
+}
+
+// ==========================================================================
+// Interactions — set up AFTER content is in the DOM
+// ==========================================================================
+function setupInteractions() {
+  const navbar = document.getElementById("navbar");
+  const navToggle = document.getElementById("navToggle");
+  const navMenu = document.getElementById("navMenu");
+  const navLinks = Array.from(document.querySelectorAll(".nav-link"));
+
+  // Mobile menu toggle with proper aria state
+  if (navToggle && navMenu) {
+    navToggle.addEventListener("click", () => {
+      const open = navMenu.classList.toggle("active");
+      navToggle.setAttribute("aria-expanded", String(open));
+    });
+    navMenu.addEventListener("click", (e) => {
+      if (e.target.closest(".nav-link")) {
+        navMenu.classList.remove("active");
+        navToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  // Smooth scroll for in-page anchors (respects reduced motion)
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const id = this.getAttribute("href");
+      if (id === "#") return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top, behavior: REDUCED_MOTION ? "auto" : "smooth" });
+    });
+  });
+
+  // Navbar elevation — single rAF-throttled scroll handler
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      if (navbar) navbar.classList.toggle("is-scrolled", window.scrollY > 20);
+      ticking = false;
+    });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // Active nav link via IntersectionObserver (class-based, no inline styles)
+  const sections = document.querySelectorAll("main section[id]");
+  if (navLinks.length && sections.length) {
+    const byId = new Map(navLinks.map((l) => [l.getAttribute("href"), l]));
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const link = byId.get(`#${entry.target.id}`);
+          if (!link) return;
+          navLinks.forEach((l) => l.classList.remove("is-active"));
+          link.classList.add("is-active");
         });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+    sections.forEach((s) => navObserver.observe(s));
+  }
 
-        // Load certifications
-        data.certifications.forEach(cert => {
-            const certItem = document.createElement('div');
-            certItem.className = 'cert-item';
-            certItem.innerHTML = `
-                <strong>${cert.name}</strong>
-                ${cert.issuer ? `<p style="font-size: 0.875rem; margin-top: 0.25rem; opacity: 0.8;">${cert.issuer}</p>` : ''}
-            `;
-            certGrid.appendChild(certItem);
-        });
-    } catch (error) {
-        console.error('Error loading education data:', error);
-    }
-}
-
-// ==========================================================================
-// Contact Form Handler (Now handled in loadContact())
-// ==========================================================================
-// Form handler is now attached dynamically in loadContact() function
-
-// ==========================================================================
-// Scroll Reveal Animation
-// ==========================================================================
-function revealOnScroll() {
-    const elements = document.querySelectorAll('.timeline-item, .skill-category, .project-card, .education-item, .stat-item');
-
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-
-        if (elementTop < window.innerHeight - elementVisible) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
+  // Scroll reveal via IntersectionObserver (no FOUC, no scroll spam)
+  const revealTargets = document.querySelectorAll(
+    ".timeline-item, .skill-category, .project-card, .education-item, .stat-item, .cert-item"
+  );
+  if (REDUCED_MOTION) return; // CSS keeps everything visible
+  const revealObserver = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
         }
-    });
+      });
+    },
+    { rootMargin: "0px 0px -10% 0px", threshold: 0.1 }
+  );
+  revealTargets.forEach((el, i) => {
+    el.classList.add("reveal");
+    el.style.transitionDelay = `${Math.min(i % 6, 5) * 60}ms`;
+    revealObserver.observe(el);
+  });
 }
 
-// Initialize elements for scroll animation
-function initScrollAnimation() {
-    const elements = document.querySelectorAll('.timeline-item, .skill-category, .project-card, .education-item, .stat-item');
-    elements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    });
-}
-
-window.addEventListener('scroll', revealOnScroll);
-
 // ==========================================================================
-// Initialize Everything When DOM is Ready
+// Boot
 // ==========================================================================
-document.addEventListener('DOMContentLoaded', async () => {
-    // Load all content from JSON files
-    await loadSiteConfig();
-    await loadNavigation();
-    await loadHero();
-    await loadAbout();
-    await loadExperience();
-    await loadSkills();
-    await loadProjects();
-    await loadEducation();
-    await loadContact();
-    await loadFooter();
+document.addEventListener("DOMContentLoaded", async () => {
+  // Each loader is independent — one failure shouldn't blank the whole page.
+  const loaders = [
+    loadSiteConfig,
+    loadNavigation,
+    loadHero,
+    loadAbout,
+    loadExperience,
+    loadSkills,
+    loadProjects,
+    loadEducation,
+    loadContact,
+    loadFooter,
+  ];
+  const results = await Promise.allSettled(loaders.map((fn) => fn()));
+  results.forEach((r, i) => {
+    if (r.status === "rejected") console.error(`[portfolio] ${loaders[i].name} failed:`, r.reason);
+  });
 
-    // Small delay to ensure elements are rendered before animation
-    setTimeout(() => {
-        initScrollAnimation();
-        revealOnScroll();
-    }, 100);
-});
-
-// ==========================================================================
-// Active Navigation Link Highlight
-// ==========================================================================
-window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('section[id]');
-    const scrollY = window.pageYOffset;
-
-    sections.forEach(section => {
-        const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 100;
-        const sectionId = section.getAttribute('id');
-        const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-
-        if (navLink) {
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                navLink.style.color = 'var(--primary-color)';
-            } else {
-                navLink.style.color = '';
-            }
-        }
-    });
+  setupInteractions();
 });

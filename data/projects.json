@@ -9,6 +9,7 @@
         "Jupyter Notebook"
       ],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/cohort_analysis.jpg",
       "github": "https://github.com/tvamshi8/cohort_analysis",
       "demo": "https://github.com/tvamshi8/cohort_analysis"
     },
@@ -23,6 +24,7 @@
         "Dockerfile"
       ],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/healthcare-analytics.jpg",
       "github": "https://github.com/tvamshi8/healthcare-analytics",
       "demo": "https://github.com/tvamshi8/healthcare-analytics"
     },
@@ -31,6 +33,7 @@
       "description": "Generated GitHub contribution history",
       "technologies": [],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/contribution-history.jpg",
       "github": "https://github.com/tvamshi8/contribution-history",
       "demo": "https://github.com/tvamshi8/contribution-history"
     },
@@ -39,6 +42,7 @@
       "description": "Interactive application built for continuous learning",
       "technologies": [],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/f1-data-analysis.jpg",
       "github": "https://github.com/tvamshi8/f1-data-analysis",
       "demo": "https://github.com/tvamshi8/f1-data-analysis"
     },
@@ -47,6 +51,7 @@
       "description": "Practice repository for exploring advanced features",
       "technologies": [],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/uber-trip-analysis.jpg",
       "github": "https://github.com/tvamshi8/uber-trip-analysis",
       "demo": "https://github.com/tvamshi8/uber-trip-analysis"
     },
@@ -55,6 +60,7 @@
       "description": "Hands-on learning experience with modern frameworks",
       "technologies": [],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/stock-analysis.jpg",
       "github": "https://github.com/tvamshi8/stock-analysis",
       "demo": "https://github.com/tvamshi8/stock-analysis"
     },
@@ -65,6 +71,7 @@
         "Python"
       ],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/dynamic-pricing.jpg",
       "github": "https://github.com/tvamshi8/Dynamic_Pricing_Strategy.py",
       "demo": "https://github.com/tvamshi8/Dynamic_Pricing_Strategy.py"
     },
@@ -75,6 +82,7 @@
         "Python"
       ],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/cohort-business.jpg",
       "github": "https://github.com/tvamshi8/Cohort-Analysis-for-Businesses",
       "demo": "https://github.com/tvamshi8/Cohort-Analysis-for-Businesses"
     },
@@ -85,6 +93,7 @@
         "Python"
       ],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/credit-scoring.jpg",
       "github": "https://github.com/tvamshi8/credit-scoring-and-segmentation",
       "demo": "https://github.com/tvamshi8/credit-scoring-and-segmentation"
     },
@@ -95,6 +104,7 @@
         "Python"
       ],
       "icon": "fas fa-project-diagram",
+      "image": "assets/img/projects/data-collage.jpg",
       "github": "https://github.com/tvamshi8/projects",
       "demo": "https://github.com/tvamshi8/projects"
     }
