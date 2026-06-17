@@ -1,0 +1,22 @@
+{
+  "_instructions": "About section content.",
+  "sectionTitle": "About Me",
+  "paragraphs": [
+    "Business Analyst with 1+ years of experience transforming operational data, business requirements, and stakeholder feedback into reporting solutions, process improvements, and measurable business outcomes. Hands-on experience using SQL, Power BI, and business intelligence practices to analyze performance trends, strengthen KPI visibility, improve reporting accuracy, and support planning decisions.",
+    "Skilled in requirements elicitation, workflow analysis, root cause investigation, UAT coordination, and cross-functional collaboration across business, product, and technical teams. Currently pursuing a Master's degree in Data Science with a focus on analytics-driven business problem solving."
+  ],
+  "statistics": [
+    {
+      "value": "1+",
+      "label": "Years Experience"
+    },
+    {
+      "value": "1+",
+      "label": "Projects Completed"
+    },
+    {
+      "value": "17+",
+      "label": "Technologies"
+    }
+  ]
+}

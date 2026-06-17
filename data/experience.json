@@ -1,0 +1,27 @@
+{
+  "_instructions": "Add your work experience here. Copy the experience object for each job.",
+  "sectionTitle": "Professional Experience",
+  "experiences": [
+    {
+      "title": "Business Analyst",
+      "company": "Amazon",
+      "period": "Feb 2025 - Present",
+      "location": "",
+      "description": "Gathered and documented requirements for 12+ business initiatives, reducing clarification cycles by 30% and improving alignment among stakeholders, product teams, and implementation partners throughout project delivery.\nDesigned Power BI dashboards tracking more than 25 operational metrics, increasing visibility into performance trends and reducing manual reporting effort by 40% across multiple business functions.\nDeveloped SQL queries to analyze datasets exceeding 500,000 records, improving reporting accuracy, validating business assumptions, and supporting operational planning, forecasting, and performance evaluations.\nAssessed end-to-end workflows across operational teams, identifying process gaps and recommending improvements that reduced turnaround times by 20% while strengthening process consistency.\nFacilitated stakeholder interviews, discovery sessions, and requirement workshops, accelerating project approvals and minimizing delays caused by unclear requirements, scope changes, and communication gaps.\nAuthored business requirements, functional specifications, process maps, workflow diagrams, user stories, and acceptance criteria supporting solution design, testing, implementation, and business readiness activities.\nPartnered with product managers, engineers, and operations teams to prioritize enhancement requests, contributing to successful delivery of business-critical capabilities aligned with organizational objectives.\nInvestigated reporting variances, operational exceptions, and data quality issues, identifying root causes and implementing corrective actions that improved reliability of business reporting outputs.\nCoordinated User Acceptance Testing activities for multiple releases, validating business scenarios, tracking defects, and achieving approval rates above 90% before production deployment.\nStandardized KPI definitions, reporting logic, and business rules across departments, improving metric consistency and strengthening confidence in operational performance measurement.\nAutomated recurring reporting activities through SQL and Power BI solutions, reducing report preparation time by 35% while improving accessibility of business information for stakeholders.\nPrepared trend analyses, forecasting reports, and executive summaries supporting planning activities, resource allocation decisions, performance reviews, and strategic business discussions.",
+      "responsibilities": [
+        "Gathered and documented requirements for 12+ business initiatives, reducing clarification cycles by 30% and improving alignment among stakeholders, product teams, and implementation partners throughout project delivery",
+        "Designed Power BI dashboards tracking more than 25 operational metrics, increasing visibility into performance trends and reducing manual reporting effort by 40% across multiple business functions",
+        "Developed SQL queries to analyze datasets exceeding 500,000 records, improving reporting accuracy, validating business assumptions, and supporting operational planning, forecasting, and performance evaluations",
+        "Assessed end-to-end workflows across operational teams, identifying process gaps and recommending improvements that reduced turnaround times by 20% while strengthening process consistency",
+        "Facilitated stakeholder interviews, discovery sessions, and requirement workshops, accelerating project approvals and minimizing delays caused by unclear requirements, scope changes, and communication gaps",
+        "Authored business requirements, functional specifications, process maps, workflow diagrams, user stories, and acceptance criteria supporting solution design, testing, implementation, and business readiness activities",
+        "Partnered with product managers, engineers, and operations teams to prioritize enhancement requests, contributing to successful delivery of business-critical capabilities aligned with organizational objectives",
+        "Investigated reporting variances, operational exceptions, and data quality issues, identifying root causes and implementing corrective actions that improved reliability of business reporting outputs",
+        "Coordinated User Acceptance Testing activities for multiple releases, validating business scenarios, tracking defects, and achieving approval rates above 90% before production deployment",
+        "Standardized KPI definitions, reporting logic, and business rules across departments, improving metric consistency and strengthening confidence in operational performance measurement",
+        "Automated recurring reporting activities through SQL and Power BI solutions, reducing report preparation time by 35% while improving accessibility of business information for stakeholders",
+        "Prepared trend analyses, forecasting reports, and executive summaries supporting planning activities, resource allocation decisions, performance reviews, and strategic business discussions"
+      ]
+    }
+  ]
+}

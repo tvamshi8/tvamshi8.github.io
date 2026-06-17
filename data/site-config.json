@@ -1,0 +1,18 @@
+{
+  "_instructions": "Site-wide configuration and meta tags. Update these values for SEO and branding.",
+  "meta": {
+    "title": "Vamshi Tummala | Business Analyst",
+    "description": "Vamshi Tummala - Business Analyst | Portfolio",
+    "author": "Vamshi Tummala",
+    "keywords": "Business Analyst, Portfolio, Vamshi Tummala"
+  },
+  "branding": {
+    "name": "Vamshi Tummala",
+    "tagline": "Business Analyst"
+  },
+  "settings": {
+    "year": 2026,
+    "enableAnimations": true,
+    "navbarScrollEffect": true
+  }
+}

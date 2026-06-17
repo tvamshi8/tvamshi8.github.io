@@ -1,0 +1,102 @@
+{
+  "_instructions": "Add your projects here. Each project should showcase your work.",
+  "sectionTitle": "Featured Projects",
+  "projects": [
+    {
+      "title": "cohort_analysis",
+      "description": "Comprehensive project exploring software design patterns",
+      "technologies": [
+        "Jupyter Notebook"
+      ],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/cohort_analysis",
+      "demo": "https://github.com/tvamshi8/cohort_analysis"
+    },
+    {
+      "title": "healthcare-analytics",
+      "description": "Portfolio project showcasing development capabilities",
+      "technologies": [
+        "Python",
+        "TypeScript",
+        "CSS",
+        "JavaScript",
+        "Dockerfile"
+      ],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/healthcare-analytics",
+      "demo": "https://github.com/tvamshi8/healthcare-analytics"
+    },
+    {
+      "title": "contribution-history",
+      "description": "Generated GitHub contribution history",
+      "technologies": [],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/contribution-history",
+      "demo": "https://github.com/tvamshi8/contribution-history"
+    },
+    {
+      "title": "f1-data-analysis",
+      "description": "Interactive application built for continuous learning",
+      "technologies": [],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/f1-data-analysis",
+      "demo": "https://github.com/tvamshi8/f1-data-analysis"
+    },
+    {
+      "title": "uber-trip-analysis",
+      "description": "Practice repository for exploring advanced features",
+      "technologies": [],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/uber-trip-analysis",
+      "demo": "https://github.com/tvamshi8/uber-trip-analysis"
+    },
+    {
+      "title": "stock-analysis",
+      "description": "Hands-on learning experience with modern frameworks",
+      "technologies": [],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/stock-analysis",
+      "demo": "https://github.com/tvamshi8/stock-analysis"
+    },
+    {
+      "title": "Dynamic_Pricing_Strategy.py",
+      "description": "GitHub repository: Dynamic_Pricing_Strategy.py",
+      "technologies": [
+        "Python"
+      ],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/Dynamic_Pricing_Strategy.py",
+      "demo": "https://github.com/tvamshi8/Dynamic_Pricing_Strategy.py"
+    },
+    {
+      "title": "Cohort-Analysis-for-Businesses",
+      "description": "GitHub repository: Cohort-Analysis-for-Businesses",
+      "technologies": [
+        "Python"
+      ],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/Cohort-Analysis-for-Businesses",
+      "demo": "https://github.com/tvamshi8/Cohort-Analysis-for-Businesses"
+    },
+    {
+      "title": "credit-scoring-and-segmentation",
+      "description": "GitHub repository: credit-scoring-and-segmentation",
+      "technologies": [
+        "Python"
+      ],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/credit-scoring-and-segmentation",
+      "demo": "https://github.com/tvamshi8/credit-scoring-and-segmentation"
+    },
+    {
+      "title": "projects",
+      "description": "GitHub repository: projects",
+      "technologies": [
+        "Python"
+      ],
+      "icon": "fas fa-project-diagram",
+      "github": "https://github.com/tvamshi8/projects",
+      "demo": "https://github.com/tvamshi8/projects"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "_instructions": "Organize your skills into categories. Each category has a name, icon, and list of skills.",
+  "_iconHelp": "Use Font Awesome icons (https://fontawesome.com/icons).",
+  "sectionTitle": "Skills & Technologies",
+  "categories": [
+    {
+      "category": "Programming Languages",
+      "icon": "fas fa-code",
+      "skills": [
+        "Python"
+      ]
+    },
+    {
+      "category": "Frameworks & Libraries",
+      "icon": "fas fa-toolbox",
+      "skills": [
+        "Pandas",
+        "NumPy"
+      ]
+    },
+    {
+      "category": "Tools & Platforms",
+      "icon": "fas fa-wrench",
+      "skills": [
+        "Power BI",
+        "Tableau",
+        "SQL",
+        "MySQL",
+        "PostgreSQL",
+        "SQL Server",
+        "Jira",
+        "Confluence",
+        "Azure DevOps",
+        "ServiceNow",
+        "Microsoft Visio",
+        "Lucidchart",
+        "SharePoint",
+        "Microsoft Office Suite"
+      ]
+    },
+    {
+      "category": "Technical Skills",
+      "icon": "fas fa-laptop-code",
+      "skills": [
+        "Requirements Gathering",
+        "Business Requirements",
+        "Functional Requirements",
+        "Requirements Documentation",
+        "Business Process Analysis",
+        "Gap Analysis",
+        "Workflow Analysis",
+        "Process Mapping",
+        "BRD",
+        "FRD",
+        "User Stories",
+        "Acceptance Criteria",
+        "Use Cases",
+        "Business Rules",
+        "Root Cause Analysis",
+        "UAT",
+        "Stakeholder Management",
+        "Change Management",
+        "Data Analysis",
+        "Business Intelligence",
+        "KPI Development",
+        "Operational Analytics",
+        "Trend Analysis",
+        "Forecasting",
+        "Performance Measurement",
+        "Variance Analysis",
+        "Data Validation",
+        "Data Quality Assessment",
+        "Executive Reporting",
+        "Ad Hoc Analysis",
+        "Dashboard Development",
+        "KPI Dashboards",
+        "Executive Scorecards",
+        "Data Visualization",
+        "Power Query",
+        "DAX",
+        "Performance Reporting",
+        "Data Storytelling",
+        "Data Extraction",
+        "Data Transformation",
+        "Data Cleansing",
+        "Relational Databases",
+        "Query Optimization",
+        "Data Modeling",
+        "Statistical Analysis",
+        "Predictive Analytics",
+        "Reporting Automation",
+        "Agile",
+        "Scrum",
+        "SDLC",
+        "Waterfall",
+        "Process Improvement",
+        "Continuous Improvement",
+        "Business Process Reengineering"
+      ]
+    }
+  ]
+}
